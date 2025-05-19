@@ -1,0 +1,21 @@
+RewriteEngine On
+RewriteBase /
+RewriteRule ^assets/ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+RewriteRule ^(.*)$ index.php [L,QSA]
+<Directory "uploads">
+    Options -Indexes
+    Order allow,deny
+    Allow from all
+</Directory>
+
+<Directory "assets">
+    Options -Indexes
+    Order allow,deny
+    Allow from all
+</Directory>
+
+php_flag display_errors on
+php_value error_reporting E_ALL 

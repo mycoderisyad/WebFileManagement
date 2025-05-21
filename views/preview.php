@@ -12,8 +12,6 @@ function formatFileSize($bytes) {
 }
 
 $extension = strtolower(pathinfo($file->filename, PATHINFO_EXTENSION));
-
-// Get file content for text files
 $file_content = '';
 if (in_array($extension, ['txt', 'sql', 'md'])) {
     $file_content = @file_get_contents($file->file_path) ?: 'Unable to read file content';

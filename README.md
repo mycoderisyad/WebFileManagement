@@ -4,54 +4,20 @@ Sistem manajemen file berbasis web sederhana yang dibangun dengan PHP, mengikuti
 
 ## Fitur
 
-- **Buat**: Unggah file dengan detail (judul, deskripsi, kategori, tenggat waktu)
-- **Baca**: Lihat file dalam tata letak grid atau daftar dengan informasi lengkap
-- **Perbarui**: Edit detail file
-- **Hapus**: Hapus file dari sistem
-- **Filter & Urut**: Atur file berdasarkan kategori, tanggal, atau tenggat waktu
+- **Create**: Unggah file dengan detail (judul, deskripsi, kategori, tenggat waktu)
+- **Read**: Lihat file dalam tata letak grid atau daftar dengan informasi lengkap
+- **Update**: Edit detail file
+- **Delete**: Hapus file dari sistem
+- **Filter & Sort**: Atur file berdasarkan kategori, tanggal, atau tenggat waktu
 - **Desain Responsif**: UI modern yang berfungsi di desktop dan perangkat mobile
 
 ## Teknologi yang Digunakan
 
-- PHP 7.4+ dengan pendekatan OOP
-- MySQL untuk penyimpanan database
-- Pure CSS
+- PHP 
+- MySQL
+- CSS
 - HTML5
 - JavaScript
-
-## Struktur Proyek
-
-Aplikasi ini mengikuti arsitektur MVC (Model-View-Controller):
-
-```
-/
-├── assets/
-│   └── css/
-│       └── styles.css
-├── controllers/
-│   ├── FileController.php
-│   └── HomeController.php
-├── core/
-│   ├── Controller.php
-│   ├── Database.php
-│   └── Router.php
-├── models/
-│   └── File.php
-├── uploads/
-│   └── (file yang diunggah pengguna)
-├── views/
-│   ├── edit_form.php
-│   ├── edit_form_content.php
-│   ├── home.php
-│   ├── home_content.php
-│   ├── layout.php
-│   ├── upload_form.php
-│   ├── upload_form_content.php
-│   ├── view_file.php
-│   └── view_file_content.php
-├── index.php
-└── README.md
-```
 
 ## Instalasi
 

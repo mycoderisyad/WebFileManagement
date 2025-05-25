@@ -1,0 +1,7 @@
+footer {
+  background-color: transparent;
+  color: var(--text-main);
+  padding: 0.2rem;
+  text-align: center;
+  margin-top: 6rem;
+}

@@ -73,5 +73,4 @@ function formatFileSize($bytes) {
         <a href="/app" class="btn btn-back">Cancel</a>
     </div>
 </form>
-
 <script src="/assets/js/main.js"></script> 

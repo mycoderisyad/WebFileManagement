@@ -75,19 +75,9 @@
                 </div>
             </div>
         </section>
-        
-        <section class="landing-cta">
-            <div class="container">
-                <h2>Mulai Kelola File Anda Sekarang</h2>
-                <p>Tingkatkan produktivitas dan organisasi tugas Anda dengan sistem manajemen file yang mudah digunakan dan efisien.</p>
-                <a href="/app" class="btn">Buka Dashboard</a>
-            </div>
-        </section>
-    </main>
-    
     <footer>
         <div class="container">
-            <p>&copy; <?= date('Y') ?>File Management System</p>
+            <p>&copy; <?= date('Y') ?> File Management System</p>
         </div>
     </footer>
 </body>

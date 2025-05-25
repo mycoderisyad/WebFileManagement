@@ -23,7 +23,7 @@ class Router {
             $controllerInstance->$method();
         } else {
             header("HTTP/1.0 404 Not Found");
-            include 'views/404.php';
+            include 'views/not_found_page.php';
             exit();
         }
     }

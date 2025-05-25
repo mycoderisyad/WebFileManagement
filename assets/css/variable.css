@@ -1,0 +1,17 @@
+:root {
+  --bg-main: #ffffff;
+  --card-bg: #ffffff;
+  --text-main: #333333;
+  --text-secondary: #666666;
+  --success-color: #a5ff74;
+  --warning-color: #e19b69;
+  --danger-color: #fb5e5e;
+  --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  --hover-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  --transition: all 0.3s ease;
+  --border-radius: 0.8rem;
+  --border-color: rgb(112, 112, 112);
+  --foot-color: #939393;
+
+
+}

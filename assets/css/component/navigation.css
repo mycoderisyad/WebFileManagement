@@ -1,0 +1,54 @@
+header {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  padding: 1.2rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+  transition: background-color 0.3s ease;
+}
+
+header.scrolled {
+  background-color: rgba(245, 245, 245, 0.95);
+}
+
+header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+}
+
+nav ul li {
+  margin-left: 1.5rem;
+}
+
+nav ul li a {
+  color: var(--text-main);
+  font-weight: 500;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+nav ul li a:hover {
+  background-color: rgba(98, 98, 98, 0.11);
+  color: var(--text-secondary);
+}
+
+/* Main */
+main {
+  padding: 2rem 0;
+  min-height: calc(100vh - 12rem);
+}
+

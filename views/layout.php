@@ -47,20 +47,19 @@
     
     <footer>
         <div class="container">
-            <p>&copy; <?= date('Y') ?> Task & File Management System</p>
+            <p>&copy; <?= date('Y') ?> File Management System</p>
         </div>
     </footer>
-    <div class="confirm-overlay" id="confirmOverlay">
-        <div class="confirm-dialog">
-            <div class="confirm-title">Confirm Action</div>
-            <div class="confirm-message" id="confirmMessage"></div>
-            <div class="confirm-buttons">
-                <button class="confirm-btn confirm-btn-cancel" id="confirmCancel">Cancel</button>
-                <button class="confirm-btn confirm-btn-confirm" id="confirmOk">Confirm</button>
-            </div>
+<div class="confirm-overlay">
+    <div class="confirm-dialog">
+        <div class="confirm-title">Confirm Delete</div>
+        <div class="confirm-message">Are you sure you want to delete this file?</div>
+        <div class="confirm-buttons">
+            <button class="confirm-btn confirm-btn-cancel">Cancel</button>
+            <button class="confirm-btn confirm-btn-confirm">Delete</button>
         </div>
     </div>
-    
-    <script src="/assets/js/main.js"></script>
+</div>
+    <script src="assets/js/main.js"></script>
 </body>
 </html> 

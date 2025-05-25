@@ -1,0 +1,73 @@
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background-color: #ffffff;
+  padding: 1.2rem;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.filter select,
+.sort a,
+.view-toggle button {
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.filter select {
+  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.sort {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sort span {
+  font-weight: 500;
+}
+
+.sort a {
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  text-decoration: none;
+  font-size: 0.95rem;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.sort a:hover,
+.sort a.active {
+  background-color: var(--text-main);
+  color: var(--bg-main);
+  border-color: var(--text-main);
+}
+
+.view-toggle {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.view-toggle button {
+  border: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: var(--text-main);
+}
+
+.view-toggle button.active {
+  background-color: var(--text-main);
+  color: var(--bg-main);
+  border-color: var(--text-main);
+}

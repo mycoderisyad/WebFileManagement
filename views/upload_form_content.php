@@ -42,7 +42,7 @@
     <div class="form-group">
         <label for="file">File:</label>
         <input type="file" id="file" name="file" required>
-        <small>Accepted file types: PDF, DOC, DOCX, JPG, PNG (Max size: 5MB)</small>
+        <small>Accepted file types: PDF, DOC, DOCX, JPG, PNG, TXT (Max size: 5MB)</small>
     </div>
     
     <div class="form-actions">

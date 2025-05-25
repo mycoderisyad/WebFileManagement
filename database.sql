@@ -13,8 +13,3 @@ CREATE TABLE `files` (
   `deadline` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-INSERT INTO `files` (`title`, `description`, `category`, `filename`, `file_path`, `file_type`, `file_size`, `upload_date`, `deadline`) VALUES
-('Sample PDF Document', 'This is a sample PDF document for testing purposes.', 'Tutorial', 'sample.pdf', 'uploads/sample.pdf', 'application/pdf', 52428, NOW(), DATE_ADD(NOW(), INTERVAL 7 DAY)),
-('Project Proposal', 'Initial project proposal document for the semester project.', 'Project', 'proposal.docx', 'uploads/proposal.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 35840, NOW(), DATE_ADD(NOW(), INTERVAL 14 DAY)),
-('Meeting Notes', 'Notes from the weekly team meeting.', 'Meeting', 'notes.docx', 'uploads/notes.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 24576, NOW(), NULL); 

@@ -1,0 +1,64 @@
+.message,
+.error-container {
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border-left: 3px solid;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 1000;
+  max-width: 300px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.message {
+  color: var(--text-main);
+  border-color: #666666;
+}
+
+.error-container {
+  color: var(--text-main);
+  border-color: #999999;
+  background-color: #ffffff;
+  position: relative;
+  top: 0;
+  right: 0;
+  max-width: 100%;
+}
+
+.error-container ul {
+  margin-left: 1.5rem;
+  margin-bottom: 0;
+}
+
+.message .close-btn,
+.error-container .close-btn {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.message .close-btn:hover,
+.error-container .close-btn:hover {
+  opacity: 1;
+}

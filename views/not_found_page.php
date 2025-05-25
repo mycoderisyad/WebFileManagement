@@ -26,7 +26,6 @@
             <div class="error-page">
                 <div class="error-code">404</div>
                 <div class="error-text">Page Not Found</div>
-                <p>The page you are looking for doesn't exist or has been moved.</p>
                 <a href="/" class="back-home">Back to Home</a>
             </div>
         </div>

@@ -16,7 +16,7 @@ class File {
     
     public function __construct($db) {
         $this->conn = $db;
-        $this->icon_type = 'file'; // Default icon type
+        $this->icon_type = 'file';
     }
     
     private function cleanData($data) {

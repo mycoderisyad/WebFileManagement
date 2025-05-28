@@ -12,14 +12,18 @@ class FileController extends Controller
         'image/svg+xml',
         'application/vnd.ms-excel',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'text/csv',
         'application/vnd.ms-powerpoint',
         'application/vnd.openxmlformats-officedocument.presentationml.presentation',
         'application/x-sql',
         'application/sql',
         'text/plain',
         'application/zip',
+        'application/x-zip-compressed',
         'application/x-rar-compressed',
-        'application/x-7z-compressed'
+        'application/vnd.rar',
+        'application/x-7z-compressed',
+        'application/octet-stream'
     ];
     private $maxFileSize = 5242880;
     private $viewableExtensions = [
@@ -36,13 +40,20 @@ class FileController extends Controller
         return $database->connect();
     }
 
-    private function validateFile($uploadedFile)
-    {
+    private function validateFile($uploadedFile) {
         $errors = [];
         if (!$uploadedFile || $uploadedFile['error'] !== UPLOAD_ERR_OK) {
             $errors[] = 'File upload failed.';
         } else {
-            if (!in_array($uploadedFile['type'], $this->acceptedFileTypes)) {
+            $allowedExtensions = [
+                'pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'svg',
+                'xls', 'xlsx', 'csv', 'ppt', 'pptx', 'sql', 'txt', 'zip', 'rar', '7z'
+            ];
+            $fileExtension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
+            if (
+                !in_array($uploadedFile['type'], $this->acceptedFileTypes) &&
+                !in_array($fileExtension, $allowedExtensions)
+            ) {
                 $errors[] = 'Invalid file type. Accepted types: PDF, DOC, DOCX, JPG, PNG, SVG, XLS, XLSX, PPT, PPTX, SQL, TXT, ZIP, RAR, 7Z.';
             }
             if ($uploadedFile['size'] > $this->maxFileSize) {
@@ -105,6 +116,7 @@ class FileController extends Controller
             'svg' => 'img',
             'xls' => 'xls',
             'xlsx' => 'xls',
+            'csv' => 'xls',
             'ppt' => 'ppt',
             'pptx' => 'ppt',
             'sql' => 'sql',

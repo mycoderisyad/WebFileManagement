@@ -63,11 +63,13 @@ function formatFileSize($bytes) {
     </div>
     
     <div class="form-group">
-        <label for="file">Replace File (optional):</label>
-        <input type="file" id="file" name="file">
-        <small>Leave empty if you don't want to replace the file. Accepted file types: PDF, DOC, DOCX, JPG, PNG (Max size: 5MB)</small>
+        <label for="file">File:</label>
+<input type="file" id="file" name="file" required
+    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.svg,.xls,.xlsx,.ppt,.pptx,.sql,.txt,.zip,.rar,.7z,.csv">
+<small>
+    Accepted file types: PDF, DOC, DOCX, JPG, JPEG, PNG, SVG, XLS, XLSX, PPT, PPTX, SQL, TXT, ZIP, RAR, 7Z, CSV (Max size: 5MB)
+</small>
     </div>
-    
     <div class="form-actions">
         <button type="submit" class="btn btn-edit">Update</button>
         <a href="/app" class="btn btn-back">Cancel</a>

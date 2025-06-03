@@ -16,7 +16,7 @@ $viewableExtensions = [
     'jpg', 'jpeg', 'png', 'pdf', 'svg',  
     'txt', 'sql', 'md',
     'doc', 'docx',
-    'xls', 'xlsx',      
+    'xls', 'xlsx', 'csv',      
     'ppt', 'pptx'       
 ];
 

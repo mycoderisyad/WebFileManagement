@@ -3,34 +3,34 @@
         <form action="/category" method="GET">
             <select name="category" id="category" onchange="this.form.submit()">
                 <option value="">All Categories</option>
-                <?php 
+                <?php
                 if (!empty($categories)):
                     foreach ($categories as $category):
                         $selected = (isset($currentCategory) && $currentCategory === $category) ? 'selected' : '';
                 ?>
                         <option value="<?= htmlspecialchars($category) ?>" <?= $selected ?>><?= htmlspecialchars($category) ?></option>
-                <?php 
+                <?php
                     endforeach;
                 endif;
                 ?>
             </select>
         </form>
     </div>
-    
+
     <div class="sort">
-        <a href="<?= isset($currentCategory) ? '/category?category=' . urlencode($currentCategory) . '&' : '/app' ?>?orderBy=title&order=<?= ($orderBy === 'title' && $order === 'ASC') ? 'DESC' : 'ASC' ?>" class="<?= $orderBy === 'title' ? 'active' : '' ?>">
-            Title <?= ($orderBy === 'title' && $order === 'ASC') ? '↑' : '↓' ?>
+        <a href="<?= isset($currentCategory) && $currentCategory !== '' ? '/category?category=' . urlencode($currentCategory) . '&orderBy=title&order=' . (($orderBy === 'title' && $order === 'ASC') ? 'DESC' : 'ASC') : '/app?orderBy=title&order=' . (($orderBy === 'title' && $order === 'ASC') ? 'DESC' : 'ASC') ?>" class="<?= $orderBy === 'title' ? 'active' : '' ?>">
+            Title <?= ($orderBy === 'title' && $order === 'DESC') ? '↓' : '↑' ?>
         </a>
 
-        <a href="<?= isset($currentCategory) ? '/category?category=' . urlencode($currentCategory) . '&' : '/app' ?>?orderBy=upload_date&order=<?= ($orderBy === 'upload_date' && $order === 'DESC') ? 'ASC' : 'DESC' ?>" class="<?= $orderBy === 'upload_date' ? 'active' : '' ?>">
+        <a href="<?= isset($currentCategory) && $currentCategory !== '' ? '/category?category=' . urlencode($currentCategory) . '&orderBy=upload_date&order=' . (($orderBy === 'upload_date' && $order === 'DESC') ? 'ASC' : 'DESC') : '/app?orderBy=upload_date&order=' . (($orderBy === 'upload_date' && $order === 'DESC') ? 'ASC' : 'DESC') ?>" class="<?= $orderBy === 'upload_date' ? 'active' : '' ?>">
             Date <?= ($orderBy === 'upload_date' && $order === 'DESC') ? '↓' : '↑' ?>
         </a>
 
-        <a href="<?= isset($currentCategory) ? '/category?category=' . urlencode($currentCategory) . '&' : '/app' ?>?orderBy=deadline&order=<?= ($orderBy === 'deadline' && $order === 'ASC') ? 'DESC' : 'ASC' ?>" class="<?= $orderBy === 'deadline' ? 'active' : '' ?>">
-            Deadline <?= ($orderBy === 'deadline' && $order === 'ASC') ? '↑' : '↓' ?>
+        <a href="<?= isset($currentCategory) && $currentCategory !== '' ? '/category?category=' . urlencode($currentCategory) . '&orderBy=deadline&order=' . (($orderBy === 'deadline' && $order === 'ASC') ? 'DESC' : 'ASC') : '/app?orderBy=deadline&order=' . (($orderBy === 'deadline' && $order === 'ASC') ? 'DESC' : 'ASC') ?>" class="<?= $orderBy === 'deadline' ? 'active' : '' ?>">
+            Deadline <?= ($orderBy === 'deadline' && $order === 'DESC') ? '↓' : '↑' ?>
         </a>
     </div>
-    
+
     <div class="view-toggle">
         <button id="grid-view" class="active">Grid</button>
         <button id="list-view">List</button>
@@ -60,12 +60,12 @@
                     </div>
                     <div class="file-actions">
                         <a href="<?= htmlspecialchars($row['file_path']) ?>" class="btn btn-download" download onclick="event.stopPropagation()">Download</a>
-                        <?php 
+                        <?php
                         $extension = strtolower(pathinfo($row['filename'], PATHINFO_EXTENSION));
                         $viewableExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'svg', 'txt', 'sql', 'md', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'];
                         if (in_array($extension, $viewableExtensions)):
                         ?>
-                        <a href="/preview?id=<?= $row['id'] ?>" class="btn btn-view" onclick="event.stopPropagation()">View Online</a>
+                            <a href="/preview?id=<?= $row['id'] ?>" class="btn btn-view" onclick="event.stopPropagation()">View Online</a>
                         <?php endif; ?>
                         <a href="/edit?id=<?= $row['id'] ?>" class="btn btn-edit" onclick="event.stopPropagation()">Edit</a>
                         <a href="/delete?id=<?= $row['id'] ?>" class="btn btn-delete" data-confirm="Are you sure you want to delete this file?" onclick="event.stopPropagation()">Delete</a>

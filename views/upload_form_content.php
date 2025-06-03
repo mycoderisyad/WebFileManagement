@@ -41,8 +41,11 @@
     
     <div class="form-group">
         <label for="file">File:</label>
-        <input type="file" id="file" name="file" required>
-        <small>Accepted file types: PDF, DOC, DOCX, JPG, PNG, TXT (Max size: 5MB)</small>
+        <input type="file" id="file" name="file" required
+            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.svg,.xls,.xlsx,.ppt,.pptx,.sql,.txt,.zip,.rar,.7z,.csv">
+        <small>
+            Accepted file types: PDF, DOC, DOCX, JPG, JPEG, PNG, SVG, XLS, XLSX, PPT, PPTX, SQL, TXT, ZIP, RAR, 7Z, CSV (Max size: 5MB)
+        </small>
     </div>
     
     <div class="form-actions">

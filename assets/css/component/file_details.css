@@ -194,7 +194,6 @@
   flex-wrap: wrap;
 }
 
-/* Responsive Styles */
 @media (max-width: 768px) {
   .file-details-header,
   .file-viewer-header {

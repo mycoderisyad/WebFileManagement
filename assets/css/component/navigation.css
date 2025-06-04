@@ -24,7 +24,6 @@ header h1 {
   font-weight: 600;
 }
 
-/* Desktop Navigation */
 .nav-desktop ul {
   display: flex;
   list-style: none;
@@ -47,7 +46,6 @@ header h1 {
   color: var(--text-secondary);
 }
 
-/* Burger Menu */
 .nav-toggle {
   display: none;
   background: none;
@@ -130,19 +128,19 @@ main {
   header h1 {
     font-size: 1.3rem;
   }
-  
+
   .nav-desktop {
     display: none;
   }
-  
+
   .nav-toggle {
     display: flex;
   }
-  
+
   .nav-mobile {
     display: block;
   }
-  
+
   main {
     padding: 1.5rem 0;
   }
@@ -152,13 +150,12 @@ main {
   header {
     padding: 1rem 0;
   }
-  
+
   header h1 {
     font-size: 1.2rem;
   }
-  
+
   main {
     padding: 1rem 0;
   }
 }
-

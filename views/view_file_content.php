@@ -11,7 +11,6 @@ function formatFileSize($bytes) {
     }
 }
 
-// Define viewable extensions to match FileController
 $viewableExtensions = [
     'jpg', 'jpeg', 'png', 'pdf', 'svg',  
     'txt', 'sql', 'md',

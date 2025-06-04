@@ -1,4 +1,3 @@
-// Auto-hide notifications
 document.addEventListener('DOMContentLoaded', function() {
     if (window.location.search.includes('message=')) {
         let url = new URL(window.location);
@@ -112,8 +111,7 @@ function initializeMobileNavigation() {
         navToggle.classList.toggle('active');
         navMobile.classList.toggle('active');
     });
-    
-    // Close mobile nav when clicking on links
+
     navMobile.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
             navToggle.classList.remove('active');
@@ -122,7 +120,6 @@ function initializeMobileNavigation() {
     });
 }
 
-// Close dropdown menus when clicking outside
 document.addEventListener('click', function(event) {
     if (!event.target.closest('.file-menu')) {
         document.querySelectorAll('.file-dropdown').forEach(menu => {

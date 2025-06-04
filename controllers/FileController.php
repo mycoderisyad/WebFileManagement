@@ -4,27 +4,63 @@ require_once 'models/File.php';
 class FileController extends Controller
 {
     private const ACCEPTED_TYPES = [
-        'application/pdf', 'application/msword',
+        'application/pdf',
+        'application/msword',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'image/jpeg', 'image/png', 'image/svg+xml',
+        'image/jpeg',
+        'image/png',
+        'image/svg+xml',
         'application/vnd.ms-excel',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'text/csv', 'application/vnd.ms-powerpoint',
+        'text/csv',
+        'application/vnd.ms-powerpoint',
         'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        'application/x-sql', 'application/sql', 'text/plain',
-        'application/zip', 'application/x-zip-compressed',
-        'application/x-rar-compressed', 'application/vnd.rar',
-        'application/x-7z-compressed', 'application/octet-stream'
+        'application/x-sql',
+        'application/sql',
+        'text/plain',
+        'application/zip',
+        'application/x-zip-compressed',
+        'application/x-rar-compressed',
+        'application/vnd.rar',
+        'application/x-7z-compressed',
+        'application/octet-stream'
     ];
 
     private const ALLOWED_EXTENSIONS = [
-        'pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'svg',
-        'xls', 'xlsx', 'csv', 'ppt', 'pptx', 'sql', 'txt', 'zip', 'rar', '7z'
+        'pdf',
+        'doc',
+        'docx',
+        'jpg',
+        'jpeg',
+        'png',
+        'svg',
+        'xls',
+        'xlsx',
+        'csv',
+        'ppt',
+        'pptx',
+        'sql',
+        'txt',
+        'zip',
+        'rar',
+        '7z'
     ];
 
     private const VIEWABLE_EXTENSIONS = [
-        'jpg', 'jpeg', 'png', 'pdf', 'svg', 'txt', 'sql', 'md',
-        'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'
+        'jpg',
+        'jpeg',
+        'png',
+        'pdf',
+        'svg',
+        'txt',
+        'sql',
+        'md',
+        'doc',
+        'docx',
+        'xls',
+        'xlsx',
+        'ppt',
+        'pptx'
     ];
 
     private const MAX_FILE_SIZE = 5242880;
@@ -53,7 +89,7 @@ class FileController extends Controller
         $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
         if (!in_array($file['type'], self::ACCEPTED_TYPES) && !in_array($extension, self::ALLOWED_EXTENSIONS)) {
             $errors[] = 'Invalid file type. Accepted: PDF, DOC, DOCX, JPG, PNG, SVG, XLS, XLSX, PPT, PPTX, SQL, TXT, ZIP, RAR, 7Z.';
-            }
+        }
         if ($file['size'] > self::MAX_FILE_SIZE) {
             $errors[] = 'File size exceeds 5MB limit.';
         }
@@ -173,16 +209,16 @@ class FileController extends Controller
 
     public function viewFile()
     {
-        $this->handleFileById($_GET['id'] ?? null, function($file) {
+        $this->handleFileById($_GET['id'] ?? null, function ($file) {
             $this->view('view_file', ['file' => $file]);
         });
     }
 
     public function previewFile()
     {
-        $this->handleFileById($_GET['id'] ?? null, function($file) {
+        $this->handleFileById($_GET['id'] ?? null, function ($file) {
             $extension = strtolower(pathinfo($file->filename, PATHINFO_EXTENSION));
-            
+
             if (in_array($extension, self::VIEWABLE_EXTENSIONS)) {
                 $this->view('preview', [
                     'file' => $file,
@@ -196,7 +232,7 @@ class FileController extends Controller
 
     public function editForm()
     {
-        $this->handleFileById($_GET['id'] ?? null, function($file) {
+        $this->handleFileById($_GET['id'] ?? null, function ($file) {
             $this->view('edit_form', [
                 'file' => $file,
                 'categories' => $file->getCategories()
@@ -214,7 +250,7 @@ class FileController extends Controller
         $id = $_POST['id'] ?? null;
         $uploadedFile = !empty($_FILES['file']['name']) ? $_FILES['file'] : null;
         $errors = $this->validateForm($_POST);
-        
+
         if ($uploadedFile) {
             $errors = array_merge($errors, $this->validateFile($uploadedFile));
         }
@@ -271,7 +307,7 @@ class FileController extends Controller
 
     public function deleteFile()
     {
-        $this->handleFileById($_GET['id'] ?? null, function($file) {
+        $this->handleFileById($_GET['id'] ?? null, function ($file) {
             $filePath = $file->file_path;
             if ($file->delete()) {
                 if (file_exists($filePath)) unlink($filePath);
@@ -295,7 +331,7 @@ class FileController extends Controller
         $db = $this->getDb();
         $file = new File($db);
         $result = $file->readByCategory($category, $orderBy, $order);
-        
+
         $files = [];
         if ($result && $result->rowCount() > 0) {
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {

@@ -93,7 +93,6 @@
   color: #991b1b;
 }
 
-/* Mobile Responsive */
 @media (max-width: 768px) {
   .confirm-dialog {
     width: 95%;

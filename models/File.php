@@ -3,7 +3,6 @@ class File
 {
     private $conn;
     private $table = 'files';
-    
     public $id;
     public $title;
     public $description;

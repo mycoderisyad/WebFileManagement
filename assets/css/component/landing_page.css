@@ -82,7 +82,6 @@
   line-height: 1.5;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .landing-hero {
     padding: 3rem 0;

@@ -3,137 +3,135 @@ require_once 'models/File.php';
 
 class FileController extends Controller
 {
-    private $acceptedFileTypes = [
-        'application/pdf',
-        'application/msword',
+    private const ACCEPTED_TYPES = [
+        'application/pdf', 'application/msword',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        'image/jpeg',
-        'image/png',
-        'image/svg+xml',
+        'image/jpeg', 'image/png', 'image/svg+xml',
         'application/vnd.ms-excel',
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'text/csv',
-        'application/vnd.ms-powerpoint',
+        'text/csv', 'application/vnd.ms-powerpoint',
         'application/vnd.openxmlformats-officedocument.presentationml.presentation',
-        'application/x-sql',
-        'application/sql',
-        'text/plain',
-        'application/zip',
-        'application/x-zip-compressed',
-        'application/x-rar-compressed',
-        'application/vnd.rar',
-        'application/x-7z-compressed',
-        'application/octet-stream'
-    ];
-    private $maxFileSize = 5242880;
-    private $viewableExtensions = [
-        'jpg', 'jpeg', 'png', 'pdf', 'svg',
-        'txt', 'sql', 'md', 
-        'doc', 'docx',   
-        'xls', 'xlsx',    
-        'ppt', 'pptx' 
+        'application/x-sql', 'application/sql', 'text/plain',
+        'application/zip', 'application/x-zip-compressed',
+        'application/x-rar-compressed', 'application/vnd.rar',
+        'application/x-7z-compressed', 'application/octet-stream'
     ];
 
-    private function getDatabaseConnection()
+    private const ALLOWED_EXTENSIONS = [
+        'pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'svg',
+        'xls', 'xlsx', 'csv', 'ppt', 'pptx', 'sql', 'txt', 'zip', 'rar', '7z'
+    ];
+
+    private const VIEWABLE_EXTENSIONS = [
+        'jpg', 'jpeg', 'png', 'pdf', 'svg', 'txt', 'sql', 'md',
+        'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'
+    ];
+
+    private const MAX_FILE_SIZE = 5242880;
+
+    private const PREVIEW_TYPES = [
+        'image' => ['jpg', 'jpeg', 'png', 'svg'],
+        'text' => ['txt', 'sql', 'md'],
+        'word' => ['doc', 'docx'],
+        'excel' => ['xls', 'xlsx'],
+        'powerpoint' => ['ppt', 'pptx']
+    ];
+
+    private function getDb()
     {
-        $database = new Database();
-        return $database->connect();
+        return (new Database())->connect();
     }
 
-    private function validateFile($uploadedFile) {
+    private function validateFile($file)
+    {
         $errors = [];
-        if (!$uploadedFile || $uploadedFile['error'] !== UPLOAD_ERR_OK) {
+        if (!$file || $file['error'] !== UPLOAD_ERR_OK) {
             $errors[] = 'File upload failed.';
-        } else {
-            $allowedExtensions = [
-                'pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png', 'svg',
-                'xls', 'xlsx', 'csv', 'ppt', 'pptx', 'sql', 'txt', 'zip', 'rar', '7z'
-            ];
-            $fileExtension = strtolower(pathinfo($uploadedFile['name'], PATHINFO_EXTENSION));
-            if (
-                !in_array($uploadedFile['type'], $this->acceptedFileTypes) &&
-                !in_array($fileExtension, $allowedExtensions)
-            ) {
-                $errors[] = 'Invalid file type. Accepted types: PDF, DOC, DOCX, JPG, PNG, SVG, XLS, XLSX, PPT, PPTX, SQL, TXT, ZIP, RAR, 7Z.';
+            return $errors;
+        }
+
+        $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        if (!in_array($file['type'], self::ACCEPTED_TYPES) && !in_array($extension, self::ALLOWED_EXTENSIONS)) {
+            $errors[] = 'Invalid file type. Accepted: PDF, DOC, DOCX, JPG, PNG, SVG, XLS, XLSX, PPT, PPTX, SQL, TXT, ZIP, RAR, 7Z.';
             }
-            if ($uploadedFile['size'] > $this->maxFileSize) {
-                $errors[] = 'File size exceeds the limit (5MB).';
-            }
+        if ($file['size'] > self::MAX_FILE_SIZE) {
+            $errors[] = 'File size exceeds 5MB limit.';
         }
         return $errors;
     }
 
-    private function validateFormData($data)
+    private function validateForm($data)
     {
         $errors = [];
-        if (empty($data['title'])) {
-            $errors[] = 'Title is required.';
-        }
-        if (empty($data['category'])) {
-            $errors[] = 'Category is required.';
-        }
+        if (empty($data['title'])) $errors[] = 'Title is required.';
+        if (empty($data['category'])) $errors[] = 'Category is required.';
         return $errors;
     }
 
-    private function processFileUpload($uploadedFile)
+    private function uploadFile($file)
     {
-        $fileName = time() . '_' . basename($uploadedFile['name']);
-        $targetFilePath = 'uploads/' . $fileName;
+        $fileName = time() . '_' . basename($file['name']);
+        $targetPath = 'uploads/' . $fileName;
 
-        if (move_uploaded_file($uploadedFile['tmp_name'], $targetFilePath)) {
-            return [
-                'success' => true,
-                'fileName' => $fileName,
-                'filePath' => $targetFilePath
-            ];
+        return move_uploaded_file($file['tmp_name'], $targetPath)
+            ? ['success' => true, 'fileName' => $fileName, 'filePath' => $targetPath]
+            : ['success' => false];
+    }
+
+    private function getPreviewType($extension)
+    {
+        foreach (self::PREVIEW_TYPES as $type => $extensions) {
+            if (in_array($extension, $extensions)) return $type;
         }
-        return ['success' => false];
+        return $extension === 'pdf' ? 'pdf' : 'default';
+    }
+
+    private function setFileProperties($file, $data, $uploadResult = null)
+    {
+        $file->title = $data['title'];
+        $file->description = $data['description'] ?? '';
+        $file->category = ($data['category'] === 'new_category' && !empty($data['new_category']))
+            ? $data['new_category'] : $data['category'];
+        $file->deadline = $data['deadline'] ?? null;
+
+        if ($uploadResult) {
+            $file->filename = $uploadResult['fileName'];
+            $file->file_path = $uploadResult['filePath'];
+            $file->file_type = $data['file_type'];
+            $file->file_size = $data['file_size'];
+        }
+    }
+
+    private function handleFileById($id, $callback, $errorRedirect = '/app')
+    {
+        if (!$id) {
+            $this->redirect($errorRedirect);
+            return;
+        }
+
+        $file = new File($this->getDb());
+        $file->id = $id;
+
+        if ($file->readSingle()) {
+            $callback($file);
+        } else {
+            $this->redirect($errorRedirect . '?message=File not found.');
+        }
     }
 
     public function formatFileSize($bytes)
     {
-        if ($bytes >= 1073741824) {
-            return number_format($bytes / 1073741824, 2) . ' GB';
-        } elseif ($bytes >= 1048576) {
-            return number_format($bytes / 1048576, 2) . ' MB';
-        } elseif ($bytes >= 1024) {
-            return number_format($bytes / 1024, 2) . ' KB';
-        } else {
-            return $bytes . ' bytes';
-        }
+        $units = ['bytes', 'KB', 'MB', 'GB'];
+        $factor = floor((strlen($bytes) - 1) / 3);
+        return sprintf("%.2f", $bytes / pow(1024, $factor)) . ' ' . $units[$factor];
     }
 
-    private function getFileIconType($filename) {
-        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
-        
-        $iconTypes = [
-            'pdf' => 'pdf',
-            'doc' => 'doc',
-            'docx' => 'doc',
-            'jpg' => 'img',
-            'jpeg' => 'img',
-            'png' => 'img',
-            'svg' => 'img',
-            'xls' => 'xls',
-            'xlsx' => 'xls',
-            'csv' => 'xls',
-            'ppt' => 'ppt',
-            'pptx' => 'ppt',
-            'sql' => 'sql',
-            'txt' => 'txt',
-            'zip' => 'zip',
-            'rar' => 'zip',
-            '7z' => 'zip'
-        ];
-        
-        return isset($iconTypes[$extension]) ? $iconTypes[$extension] : 'file';
-    }
     public function uploadForm()
     {
-        $db = $this->getDatabaseConnection();
-        $file = new File($db);
+        $file = new File($this->getDb());
         $this->view('upload_form', ['categories' => $file->getCategories()]);
     }
+
     public function saveFile()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -142,14 +140,10 @@ class FileController extends Controller
         }
 
         $uploadedFile = $_FILES['file'] ?? null;
-        $errors = array_merge(
-            $this->validateFile($uploadedFile),
-            $this->validateFormData($_POST)
-        );
+        $errors = array_merge($this->validateFile($uploadedFile), $this->validateForm($_POST));
 
         if (!empty($errors)) {
-            $db = $this->getDatabaseConnection();
-            $file = new File($db);
+            $file = new File($this->getDb());
             $this->view('upload_form', [
                 'errors' => $errors,
                 'categories' => $file->getCategories(),
@@ -158,25 +152,16 @@ class FileController extends Controller
             return;
         }
 
-        $uploadResult = $this->processFileUpload($uploadedFile);
+        $uploadResult = $this->uploadFile($uploadedFile);
         if (!$uploadResult['success']) {
             $this->redirect('/app?message=Failed to upload file.');
             return;
         }
 
-        $db = $this->getDatabaseConnection();
-        $file = new File($db);
-
-        $file->title = $_POST['title'];
-        $file->description = $_POST['description'] ?? '';
-        $file->category = ($_POST['category'] === 'new_category' && !empty($_POST['new_category']))
-            ? $_POST['new_category']
-            : $_POST['category'];
-        $file->filename = $uploadResult['fileName'];
-        $file->file_path = $uploadResult['filePath'];
+        $file = new File($this->getDb());
+        $this->setFileProperties($file, $_POST, $uploadResult);
         $file->file_type = $uploadedFile['type'];
         $file->file_size = $uploadedFile['size'];
-        $file->deadline = $_POST['deadline'] ?? null;
 
         if ($file->create()) {
             $this->redirect('/app?message=File uploaded successfully.');
@@ -188,75 +173,37 @@ class FileController extends Controller
 
     public function viewFile()
     {
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
-            $this->redirect('/app');
-            return;
-        }
-
-        $db = $this->getDatabaseConnection();
-        $file = new File($db);
-        $file->id = $id;
-
-        if ($file->readSingle()) {
+        $this->handleFileById($_GET['id'] ?? null, function($file) {
             $this->view('view_file', ['file' => $file]);
-        } else {
-            $this->redirect('/app?message=File not found.');
-        }
+        });
     }
 
     public function previewFile()
     {
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
-            $this->redirect('/app');
-            return;
-        }
-
-        $db = $this->getDatabaseConnection();
-        $file = new File($db);
-        $file->id = $id;
-
-        if ($file->readSingle()) {
+        $this->handleFileById($_GET['id'] ?? null, function($file) {
             $extension = strtolower(pathinfo($file->filename, PATHINFO_EXTENSION));
             
-            if (in_array($extension, $this->viewableExtensions)) {
-                $preview_type = $this->getPreviewType($extension);
+            if (in_array($extension, self::VIEWABLE_EXTENSIONS)) {
                 $this->view('preview', [
                     'file' => $file,
-                    'preview_type' => $preview_type
+                    'preview_type' => $this->getPreviewType($extension)
                 ]);
             } else {
-                $this->redirect('/view?id=' . $id . '&message=This file type cannot be viewed online. Please download it instead.');
+                $this->redirect("/view?id={$file->id}&message=This file type cannot be viewed online.");
             }
-        } else {
-            $this->redirect('/app?message=File not found.');
-        }
+        });
     }
 
     public function editForm()
     {
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
-            $this->redirect('/app');
-            return;
-        }
-
-        $db = $this->getDatabaseConnection();
-        $file = new File($db);
-        $file->id = $id;
-
-        if ($file->readSingle()) {
+        $this->handleFileById($_GET['id'] ?? null, function($file) {
             $this->view('edit_form', [
                 'file' => $file,
                 'categories' => $file->getCategories()
             ]);
-        } else {
-            $this->redirect('/app?message=File not found.');
-        }
+        });
     }
 
-    // Update file
     public function updateFile()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -265,23 +212,14 @@ class FileController extends Controller
         }
 
         $id = $_POST['id'] ?? null;
-        if (!$id) {
-            $this->redirect('/app');
-            return;
-        }
-
-        $errors = $this->validateFormData($_POST);
-        $uploadedFile = null;
-        $newFileUploaded = false;
-
-        if (!empty($_FILES['file']['name'])) {
-            $uploadedFile = $_FILES['file'];
+        $uploadedFile = !empty($_FILES['file']['name']) ? $_FILES['file'] : null;
+        $errors = $this->validateForm($_POST);
+        
+        if ($uploadedFile) {
             $errors = array_merge($errors, $this->validateFile($uploadedFile));
-            $newFileUploaded = true;
         }
 
-        $db = $this->getDatabaseConnection();
-        $file = new File($db);
+        $file = new File($this->getDb());
         $file->id = $id;
 
         if (!empty($errors)) {
@@ -296,22 +234,19 @@ class FileController extends Controller
             }
             return;
         }
+
         if (!$file->readSingle()) {
             $this->redirect('/app?message=File not found.');
             return;
         }
-        $oldFilePath = $file->file_path;
-        $file->title = $_POST['title'];
-        $file->description = $_POST['description'] ?? '';
-        $file->category = ($_POST['category'] === 'new_category' && !empty($_POST['new_category']))
-            ? $_POST['new_category']
-            : $_POST['category'];
-        $file->deadline = $_POST['deadline'] ?? null;
 
-        if ($newFileUploaded) {
-            $uploadResult = $this->processFileUpload($uploadedFile);
+        $oldFilePath = $file->file_path;
+        $this->setFileProperties($file, $_POST);
+
+        if ($uploadedFile) {
+            $uploadResult = $this->uploadFile($uploadedFile);
             if (!$uploadResult['success']) {
-                $this->redirect('/edit?id=' . $id . '&message=Failed to upload new file.');
+                $this->redirect("/edit?id={$id}&message=Failed to upload new file.");
                 return;
             }
 
@@ -322,43 +257,29 @@ class FileController extends Controller
         }
 
         if ($file->update()) {
-            if ($newFileUploaded && file_exists($oldFilePath)) {
+            if ($uploadedFile && file_exists($oldFilePath)) {
                 unlink($oldFilePath);
             }
             $this->redirect('/app?message=File updated successfully.');
         } else {
-            if ($newFileUploaded && file_exists($file->file_path)) {
+            if ($uploadedFile && file_exists($file->file_path)) {
                 unlink($file->file_path);
             }
-            $this->redirect('/edit?id=' . $id . '&message=Failed to update file.');
+            $this->redirect("/edit?id={$id}&message=Failed to update file.");
         }
     }
 
     public function deleteFile()
     {
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
-            $this->redirect('/app');
-            return;
-        }
-
-        $db = $this->getDatabaseConnection();
-        $file = new File($db);
-        $file->id = $id;
-
-        if ($file->readSingle()) {
+        $this->handleFileById($_GET['id'] ?? null, function($file) {
             $filePath = $file->file_path;
             if ($file->delete()) {
-                if (file_exists($filePath)) {
-                    unlink($filePath);
-                }
+                if (file_exists($filePath)) unlink($filePath);
                 $this->redirect('/app?message=File deleted successfully.');
             } else {
                 $this->redirect('/app?message=Failed to delete file.');
             }
-        } else {
-            $this->redirect('/app?message=File not found.');
-        }
+        });
     }
 
     public function filterByCategory()
@@ -371,13 +292,12 @@ class FileController extends Controller
 
         $orderBy = $_GET['orderBy'] ?? 'upload_date';
         $order = $_GET['order'] ?? 'DESC';
-
-        $db = $this->getDatabaseConnection();
+        $db = $this->getDb();
         $file = new File($db);
         $result = $file->readByCategory($category, $orderBy, $order);
         
+        $files = [];
         if ($result && $result->rowCount() > 0) {
-            $files = [];
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 $fileObj = new File($db);
                 foreach ($row as $key => $value) {
@@ -386,8 +306,6 @@ class FileController extends Controller
                 $row['icon_type'] = $fileObj->getFileIconType();
                 $files[] = $row;
             }
-        } else {
-            $files = [];
         }
 
         $this->view('home', [
@@ -397,26 +315,5 @@ class FileController extends Controller
             'orderBy' => $orderBy,
             'order' => $order
         ]);
-    }
-
-    private function getPreviewType($extension) {
-        $imageTypes = ['jpg', 'jpeg', 'png', 'svg'];
-        $textTypes = ['txt', 'sql', 'md'];
-        
-        if (in_array($extension, $imageTypes)) {
-            return 'image';
-        } elseif ($extension === 'pdf') {
-            return 'pdf';
-        } elseif (in_array($extension, $textTypes)) {
-            return 'text';
-        } elseif (in_array($extension, ['doc', 'docx'])) {
-            return 'word';
-        } elseif (in_array($extension, ['xls', 'xlsx'])) {
-            return 'excel';
-        } elseif (in_array($extension, ['ppt', 'pptx'])) {
-            return 'powerpoint';
-        }
-        
-        return 'default';
     }
 }

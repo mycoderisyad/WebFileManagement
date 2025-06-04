@@ -11,14 +11,24 @@
     <header>
         <div class="container">
             <h1>File Management System</h1>
-            <nav>
+            <nav class="nav-desktop">
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li><a href="/app">Dashboard</a></li>
-                    <li><a href="/upload">Upload File</a></li>
                 </ul>
             </nav>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
         </div>
+        <nav class="nav-mobile" id="navMobile">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/app">Dashboard</a></li>
+            </ul>
+        </nav>
     </header>
     
     <main>
@@ -50,16 +60,18 @@
             <p>&copy; <?= date('Y') ?> File Management System</p>
         </div>
     </footer>
-<div class="confirm-overlay">
+
+<div id="confirmOverlay" class="confirm-overlay">
     <div class="confirm-dialog">
         <div class="confirm-title">Confirm Delete</div>
-        <div class="confirm-message">Are you sure you want to delete this file?</div>
+        <div id="confirmMessage" class="confirm-message">Are you sure you want to delete this file?</div>
         <div class="confirm-buttons">
-            <button class="confirm-btn confirm-btn-cancel">Cancel</button>
-            <button class="confirm-btn confirm-btn-confirm">Delete</button>
+            <button id="confirmCancel" class="confirm-btn confirm-btn-cancel">Cancel</button>
+            <button id="confirmOk" class="confirm-btn confirm-btn-confirm">Delete</button>
         </div>
     </div>
 </div>
-    <script src="assets/js/main.js"></script>
+
+<script src="/assets/js/main.js"></script>
 </body>
 </html> 

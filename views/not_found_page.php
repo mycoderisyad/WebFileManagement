@@ -15,7 +15,6 @@
                 <ul>
                     <li><a href="/">Home</a></li>
                     <li><a href="/app">Dashboard</a></li>
-                    <li><a href="/upload">Upload File</a></li>
                 </ul>
             </nav>
         </div>

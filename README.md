@@ -1,6 +1,3 @@
-# Sistem Manajemen Tugas & File
-
-Sistem manajemen file berbasis web sederhana yang dibangun dengan PHP, mengikuti prinsip OOP dan pola desain MVC. Aplikasi ini memungkinkan pengguna untuk mengunggah, melihat, mengedit, dan mengelola file dengan kategorisasi dan pelacakan tenggat waktu.
 
 ## Fitur
 
@@ -8,15 +5,14 @@ Sistem manajemen file berbasis web sederhana yang dibangun dengan PHP, mengikuti
 - **Read**: Lihat file dalam tata letak grid atau daftar dengan informasi lengkap
 - **Update**: Edit detail file
 - **Delete**: Hapus file dari sistem
-- **Filter & Sort**: Atur file berdasarkan kategori, tanggal, atau tenggat waktu
-- **Desain Responsif**: UI modern yang berfungsi di desktop dan perangkat mobile
+- **Filter & Sort**: Atur file berdasarkan kategori, tanggal, Ddeadline
 
 ## Teknologi yang Digunakan
 
 - PHP 
 - MySQL
 - CSS
-- HTML5
+- HTML
 - JavaScript
 
 ## Instalasi
@@ -64,7 +60,7 @@ CREATE TABLE `files` (
 - Tipe file yang didukung: PDF, DOC, DOCX, JPG, PNG, dan masih banyak lagi
 - Ukuran file maksimum: 5MB
 - Informasi wajib: Judul, Kategori
-- Opsional: Deskripsi, Tenggat Waktu
+- Opsional: Deskripsi,
 
 ### Kategorisasi
 - Buat kategori kustom sesuai kebutuhan
@@ -74,7 +70,3 @@ CREATE TABLE `files` (
 - Urutkan berdasarkan tanggal unggah (terbaru/terlama)
 - Urutkan berdasarkan judul (A-Z/Z-A)
 - Urutkan berdasarkan tenggat waktu (terdekat/terjauh)
-
-### Opsi Tampilan
-- Tampilan grid (default): Menampilkan file dalam tata letak kartu
-- Tampilan daftar: Menampilkan file dalam format daftar yang ringkas

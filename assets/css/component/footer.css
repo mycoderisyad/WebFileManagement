@@ -1,7 +1,31 @@
 footer {
   background-color: transparent;
   color: var(--text-main);
-  padding: 0.2rem;
+  padding: 2rem 0;
   text-align: center;
-  margin-top: 6rem;
+  margin-top: 4rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+footer p {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  footer {
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+  }
+  
+  footer p {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  footer {
+    padding: 1rem 0;
+    margin-top: 2rem;
+  }
 }

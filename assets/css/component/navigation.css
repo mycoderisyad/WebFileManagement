@@ -24,16 +24,17 @@ header h1 {
   font-weight: 600;
 }
 
-nav ul {
+/* Desktop Navigation */
+.nav-desktop ul {
   display: flex;
   list-style: none;
 }
 
-nav ul li {
+.nav-desktop ul li {
   margin-left: 1.5rem;
 }
 
-nav ul li a {
+.nav-desktop ul li a {
   color: var(--text-main);
   font-weight: 500;
   padding: 0.5rem 0.75rem;
@@ -41,7 +42,79 @@ nav ul li a {
   transition: var(--transition);
 }
 
-nav ul li a:hover {
+.nav-desktop ul li a:hover {
+  background-color: rgba(98, 98, 98, 0.11);
+  color: var(--text-secondary);
+}
+
+/* Burger Menu */
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hamburger-line {
+  width: 24px;
+  height: 2px;
+  background-color: var(--text-main);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+
+.nav-toggle.active .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-toggle.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle.active .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Mobile Navigation */
+.nav-mobile {
+  display: none;
+  background-color: var(--bg-main);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.nav-mobile.active {
+  max-height: 200px;
+}
+
+.nav-mobile ul {
+  list-style: none;
+  padding: 1rem 0;
+}
+
+.nav-mobile ul li {
+  margin: 0;
+}
+
+.nav-mobile ul li a {
+  display: block;
+  color: var(--text-main);
+  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  transition: var(--transition);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.nav-mobile ul li:last-child a {
+  border-bottom: none;
+}
+
+.nav-mobile ul li a:hover {
   background-color: rgba(98, 98, 98, 0.11);
   color: var(--text-secondary);
 }
@@ -50,5 +123,42 @@ nav ul li a:hover {
 main {
   padding: 2rem 0;
   min-height: calc(100vh - 12rem);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 1.3rem;
+  }
+  
+  .nav-desktop {
+    display: none;
+  }
+  
+  .nav-toggle {
+    display: flex;
+  }
+  
+  .nav-mobile {
+    display: block;
+  }
+  
+  main {
+    padding: 1.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 1rem 0;
+  }
+  
+  header h1 {
+    font-size: 1.2rem;
+  }
+  
+  main {
+    padding: 1rem 0;
+  }
 }
 

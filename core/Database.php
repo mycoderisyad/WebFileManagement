@@ -1,21 +1,18 @@
 <?php
 class Database {
-    private $host = 'localhost';
-    private $db_name = 'file_management';
-    private $username = 'root';
-    private $password = 'admin';
-    private $conn;
+    private const HOST = 'localhost';
+    private const DB_NAME = 'file_management';
+    private const USERNAME = 'root';
+    private const PASSWORD = 'admin';
 
     public function connect() {
-        $this->conn = null;
-        
         try {
-            $this->conn = new PDO('mysql:host=' . $this->host . ';dbname=' . $this->db_name, $this->username, $this->password);
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $dsn = sprintf('mysql:host=%s;dbname=%s', self::HOST, self::DB_NAME);
+            $conn = new PDO($dsn, self::USERNAME, self::PASSWORD);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $conn;
         } catch(PDOException $e) {
-            echo 'Connection Error: ' . $e->getMessage();
+            throw new Exception('Database connection failed: ' . $e->getMessage());
         }
-
-        return $this->conn;
     }
 } 

@@ -11,14 +11,24 @@
     <header>
         <div class="container">
             <h1>File Management System</h1>
-            <nav>
+            <nav class="nav-desktop">
                 <ul>
                     <li><a href="/">Home</a></li>
-                    <li><a href="/upload">Upload</a></li>
                     <li><a href="/app">Dashboard</a></li>
                 </ul>
             </nav>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
         </div>
+        <nav class="nav-mobile" id="navMobile">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/app">Dashboard</a></li>
+            </ul>
+        </nav>
     </header>
     
     <main>
@@ -26,7 +36,7 @@
             <div class="container">
                 <h1>Kelola File & Tugas Anda dengan Mudah</h1>
                 <p>Sistem manajemen file yang intuitif dan sederhana untuk membantu Anda mengorganisir tugas dan dokumen dengan efisien.</p>
-                <div>
+                <div class="hero-buttons">
                     <a href="/app" class="btn btn-primary">Mulai Sekarang</a>
                     <a href="#features" class="btn btn-secondary">Pelajari Lebih Lanjut</a>
                 </div>
@@ -75,10 +85,14 @@
                 </div>
             </div>
         </section>
+    </main>
+    
     <footer>
         <div class="container">
             <p>&copy; <?= date('Y') ?> File Management System</p>
         </div>
     </footer>
+
+<script src="/assets/js/main.js"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
-.confirm-overlay {
+.confirm-overlay,
+#confirmOverlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -14,7 +15,8 @@
   transition: opacity 0.3s ease;
 }
 
-.confirm-overlay.active {
+.confirm-overlay.active,
+#confirmOverlay.active {
   opacity: 1;
   visibility: visible;
 }
@@ -30,7 +32,8 @@
   transition: transform 0.3s ease;
 }
 
-.confirm-overlay.active .confirm-dialog {
+.confirm-overlay.active .confirm-dialog,
+#confirmOverlay.active .confirm-dialog {
   transform: translateY(0);
 }
 
@@ -41,9 +44,11 @@
   color: var(--text-main);
 }
 
-.confirm-message {
+.confirm-message,
+#confirmMessage {
   margin-bottom: 1.5rem;
   color: #666;
+  line-height: 1.5;
 }
 
 .confirm-buttons {
@@ -52,31 +57,84 @@
   gap: 0.75rem;
 }
 
-.confirm-btn {
-  padding: 0.32rem 0.75rem;
-  border-radius: 10px;
-  font-size: 0.85rem;
+.confirm-btn,
+#confirmCancel,
+#confirmOk {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
   font-weight: 600;
-  min-width: 0;
   border: none;
-  margin: 0;
+  cursor: pointer;
+  transition: var(--transition);
+  min-width: 80px;
 }
 
-.confirm-btn-cancel {
-  background-color: rgba(0, 0, 0, 0.03);
+.confirm-btn-cancel,
+#confirmCancel {
+  background-color: rgba(0, 0, 0, 0.06);
   color: var(--text-main);
-  border-color: rgba(0, 0, 0, 0.1);
-}
-.confirm-btn-cancel:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-  border-color: rgba(0, 0, 0, 0.2);
 }
 
-.confirm-btn-confirm {
+.confirm-btn-cancel:hover,
+#confirmCancel:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.confirm-btn-confirm,
+#confirmOk {
   background: #fde8e8;
   color: #dc2626;
 }
-.confirm-btn-confirm:hover {
+
+.confirm-btn-confirm:hover,
+#confirmOk:hover {
   background: #fbcaca;
   color: #991b1b;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .confirm-dialog {
+    width: 95%;
+    max-width: 350px;
+    padding: 1.25rem;
+  }
+  
+  .confirm-buttons {
+    gap: 0.5rem;
+  }
+  
+  .confirm-btn,
+  #confirmCancel,
+  #confirmOk {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .confirm-dialog {
+    width: 95%;
+    padding: 1rem;
+    margin: 1rem;
+  }
+  
+  .confirm-title {
+    font-size: 1.1rem;
+  }
+  
+  .confirm-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .confirm-btn,
+  #confirmCancel,
+  #confirmOk {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+  }
 }

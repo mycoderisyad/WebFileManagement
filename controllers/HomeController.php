@@ -7,15 +7,14 @@ class HomeController extends Controller {
     }
     
     public function index() {
-        $database = new Database();
-        $db = $database->connect();
+        $db = (new Database())->connect();
         $file = new File($db);
-        $orderBy = isset($_GET['orderBy']) ? $_GET['orderBy'] : 'upload_date';
-        $order = isset($_GET['order']) ? $_GET['order'] : 'DESC';
+        $orderBy = $_GET['orderBy'] ?? 'upload_date';
+        $order = $_GET['order'] ?? 'DESC';
         $result = $file->read($orderBy, $order);
         
+        $files = [];
         if ($result && $result->rowCount() > 0) {
-            $files = [];
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 $fileObj = new File($db);
                 foreach ($row as $key => $value) {
@@ -24,14 +23,11 @@ class HomeController extends Controller {
                 $row['icon_type'] = $fileObj->getFileIconType();
                 $files[] = $row;
             }
-        } else {
-            $files = [];
         }
         
-        $categories = $file->getCategories();
         $this->view('home', [
             'files' => $files,
-            'categories' => $categories,
+            'categories' => $file->getCategories(),
             'orderBy' => $orderBy,
             'order' => $order
         ]);

@@ -3,6 +3,7 @@ class File
 {
     private $conn;
     private $table = 'files';
+    
     public $id;
     public $title;
     public $description;
@@ -15,76 +16,73 @@ class File
     public $deadline;
     public $icon_type;
 
+    private const ICON_MAPPING = [
+        'pdf' => 'pdf',
+        'doc' => 'doc', 'docx' => 'doc',
+        'jpg' => 'img', 'jpeg' => 'img', 'png' => 'img', 'svg' => 'img',
+        'xls' => 'xls', 'xlsx' => 'xls',
+        'ppt' => 'ppt', 'pptx' => 'ppt',
+        'sql' => 'sql',
+        'txt' => 'txt',
+        'zip' => 'zip', 'rar' => 'zip', '7z' => 'zip'
+    ];
+
     public function __construct($db)
     {
         $this->conn = $db;
         $this->icon_type = 'file';
     }
 
-    private function cleanData($data)
+    private function clean($data)
     {
         return !empty($data) ? htmlspecialchars(strip_tags($data)) : null;
     }
 
-    private function bindCommonParams($stmt)
+    private function execute($stmt)
     {
-        $title = $this->cleanData($this->title);
-        $description = $this->cleanData($this->description);
-        $category = $this->cleanData($this->category);
-        $deadline = $this->cleanData($this->deadline);
+        try {
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    private function bindParams($stmt, $includeFile = false)
+    {
+        $title = $this->clean($this->title);
+        $description = $this->clean($this->description);
+        $category = $this->clean($this->category);
+        $deadline = $this->clean($this->deadline);
 
         $stmt->bindParam(':title', $title);
         $stmt->bindParam(':description', $description);
         $stmt->bindParam(':category', $category);
         $stmt->bindParam(':deadline', $deadline);
-    }
-
-    private function bindFileParams($stmt)
-    {
-        $filename = $this->cleanData($this->filename);
-        $filepath = $this->cleanData($this->file_path);
-        $filetype = $this->cleanData($this->file_type);
-        $filesize = $this->cleanData($this->file_size);
+        
+        if ($includeFile) {
+            $filename = $this->clean($this->filename);
+            $filePath = $this->clean($this->file_path);
+            $fileType = $this->clean($this->file_type);
+            $fileSize = $this->clean($this->file_size);
 
         $stmt->bindParam(':filename', $filename);
-        $stmt->bindParam(':file_path', $filepath);
-        $stmt->bindParam(':file_type', $filetype);
-        $stmt->bindParam(':file_size', $filesize);
-    }
-
-    private function executeQuery($stmt)
-    {
-        try {
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            printf("Error: %s.\n", $e->getMessage());
-            return false;
+            $stmt->bindParam(':file_path', $filePath);
+            $stmt->bindParam(':file_type', $fileType);
+            $stmt->bindParam(':file_size', $fileSize);
         }
     }
 
     public function create()
     {
-        $query = 'INSERT INTO ' . $this->table . ' SET
-            title = :title,
-            description = :description,
-            category = :category,
-            filename = :filename,
-            file_path = :file_path,
-            file_type = :file_type,
-            file_size = :file_size,
-            upload_date = NOW(),
-            deadline = :deadline';
-
+        $query = "INSERT INTO {$this->table} SET title=:title, description=:description, category=:category, filename=:filename, file_path=:file_path, file_type=:file_type, file_size=:file_size, upload_date=NOW(), deadline=:deadline";
         $stmt = $this->conn->prepare($query);
-        $this->bindCommonParams($stmt);
-        $this->bindFileParams($stmt);
-
-        return $this->executeQuery($stmt);
+        $this->bindParams($stmt, true);
+        return $this->execute($stmt);
     }
 
     public function read($orderBy = 'upload_date', $order = 'DESC')
     {
-        $query = 'SELECT * FROM ' . $this->table . ' ORDER BY ' . $orderBy . ' ' . $order;
+        $query = "SELECT * FROM {$this->table} ORDER BY {$orderBy} {$order}";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
         return $stmt;
@@ -92,49 +90,19 @@ class File
 
     public function readByCategory($category, $orderBy = 'upload_date', $order = 'DESC')
     {
-        $query = 'SELECT * FROM ' . $this->table . ' WHERE category = :category ORDER BY ' . $orderBy . ' ' . $order;
+        $query = "SELECT * FROM {$this->table} WHERE category = :category ORDER BY {$orderBy} {$order}";
         $stmt = $this->conn->prepare($query);
-        $cleanCategory = $this->cleanData($category);
+        $cleanCategory = $this->clean($category);
         $stmt->bindParam(':category', $cleanCategory);
         $stmt->execute();
         return $stmt;
     }
 
-    public function getFileIconType()
-    {
-        if (empty($this->filename)) {
-            return 'file';
-        }
-
-        $extension = strtolower(pathinfo($this->filename, PATHINFO_EXTENSION));
-
-        $iconTypes = [
-            'pdf' => 'pdf',
-            'doc' => 'doc',
-            'docx' => 'doc',
-            'jpg' => 'img',
-            'jpeg' => 'img',
-            'png' => 'img',
-            'svg' => 'img',
-            'xls' => 'xls',
-            'xlsx' => 'xls',
-            'ppt' => 'ppt',
-            'pptx' => 'ppt',
-            'sql' => 'sql',
-            'txt' => 'txt',
-            'zip' => 'zip',
-            'rar' => 'zip',
-            '7z' => 'zip'
-        ];
-
-        return isset($iconTypes[$extension]) ? $iconTypes[$extension] : 'file';
-    }
-
     public function readSingle()
     {
-        $query = 'SELECT * FROM ' . $this->table . ' WHERE id = :id LIMIT 0,1';
+        $query = "SELECT * FROM {$this->table} WHERE id = :id LIMIT 1";
         $stmt = $this->conn->prepare($query);
-        $cleanId = $this->cleanData($this->id);
+        $cleanId = $this->clean($this->id);
         $stmt->bindParam(':id', $cleanId);
 
         if ($stmt->execute() && ($row = $stmt->fetch(PDO::FETCH_ASSOC))) {
@@ -151,52 +119,42 @@ class File
 
     public function update()
     {
-        $updateFile = !empty($this->filename) && !empty($this->file_path) &&
-            !empty($this->file_type) && !empty($this->file_size);
+        $hasFile = !empty($this->filename) && !empty($this->file_path);
+        $fileFields = $hasFile ? ', filename=:filename, file_path=:file_path, file_type=:file_type, file_size=:file_size' : '';
 
-        $query = 'UPDATE ' . $this->table . ' SET
-            title = :title,
-            description = :description,
-            category = :category,
-            deadline = :deadline' .
-            ($updateFile ? ',
-            filename = :filename,
-            file_path = :file_path,
-            file_type = :file_type,
-            file_size = :file_size' : '') .
-            ' WHERE id = :id';
-
+        $query = "UPDATE {$this->table} SET title=:title, description=:description, category=:category, deadline=:deadline{$fileFields} WHERE id=:id";
         $stmt = $this->conn->prepare($query);
-        $this->bindCommonParams($stmt);
-        $cleanId = $this->cleanData($this->id);
+        
+        $this->bindParams($stmt, $hasFile);
+        $cleanId = $this->clean($this->id);
         $stmt->bindParam(':id', $cleanId);
 
-        if ($updateFile) {
-            $this->bindFileParams($stmt);
-        }
-
-        return $this->executeQuery($stmt);
+        return $this->execute($stmt);
     }
 
     public function delete()
     {
-        $query = 'DELETE FROM ' . $this->table . ' WHERE id = :id';
+        $query = "DELETE FROM {$this->table} WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-        $cleanId = $this->cleanData($this->id);
+        $cleanId = $this->clean($this->id);
         $stmt->bindParam(':id', $cleanId);
-        return $this->executeQuery($stmt);
+        return $this->execute($stmt);
     }
 
     public function getCategories()
     {
-        $query = 'SELECT DISTINCT category FROM ' . $this->table;
+        $query = "SELECT DISTINCT category FROM {$this->table}";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 
-        $categories = [];
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $categories[] = $row['category'];
+        return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'category');
         }
-        return $categories;
+
+    public function getFileIconType()
+    {
+        if (empty($this->filename)) return 'file';
+        
+        $extension = strtolower(pathinfo($this->filename, PATHINFO_EXTENSION));
+        return self::ICON_MAPPING[$extension] ?? 'file';
     }
 }

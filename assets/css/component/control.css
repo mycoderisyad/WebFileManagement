@@ -8,12 +8,18 @@
   background-color: #ffffff;
   padding: 1.2rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  border-radius: var(--border-radius);
+}
+
+.controls.controls-empty {
+  justify-content: center;
+  text-align: center;
 }
 
 .filter select,
 .sort a,
-.view-toggle button {
-  padding: 0.5rem 0.5rem;
+.upload-button a {
+  padding: 0.5rem 0.75rem;
   border-radius: var(--border-radius);
   transition: var(--transition);
 }
@@ -51,21 +57,75 @@
   border-color: var(--text-main);
 }
 
-.view-toggle {
+.upload-button {
   display: flex;
   gap: 0.5rem;
 }
 
-.view-toggle button {
+.upload-button a {
   border: 1px solid var(--border-color);
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: var(--text-main);
   cursor: pointer;
   font-size: 0.95rem;
-  color: var(--text-main);
+  color: var(--text-button);
+  text-decoration: none;
+  font-weight: 500;
 }
 
-.view-toggle button.active {
-  background-color: var(--text-main);
-  color: var(--bg-main);
+.upload-button a:hover {
+  background-color: var(--text-button);
+  color: var(--text-main);
   border-color: var(--text-main);
+}
+
+@media (max-width: 768px) {
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.2rem;
+    padding: 1rem;
+  }
+  
+  .sort {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .filter {
+    width: 100%;
+  }
+  
+  .filter select {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+  }
+  
+  .upload-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .upload-button a {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .controls {
+    padding: 0.75rem;
+    gap: 1rem;
+  }
+  
+  .sort a {
+    padding: 0.6rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .upload-button a {
+    padding: 0.75rem 1.25rem;
+  }
 }

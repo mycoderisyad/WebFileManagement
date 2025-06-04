@@ -73,7 +73,7 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* File Viewer */
+
 .file-viewer {
   background-color: #ffffff;
   border-radius: 8px;
@@ -186,22 +186,12 @@
   max-width: 400px;
   margin: 0 auto;
 }
-/* File Actions */
+
+
 .file-actions {
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
-}
-
-.file-actions .btn {
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  font-size: 0.85rem;
-  font-weight: 500;
-  min-width: 0;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-  border: none;
-  margin: 0;
 }
 
 /* Responsive Styles */
@@ -229,12 +219,6 @@
     justify-content: flex-start;
   }
 
-  .file-actions .btn {
-    flex: 1;
-    text-align: center;
-    min-width: 120px;
-  }
-
   .info-item {
     flex-direction: column;
   }
@@ -255,5 +239,33 @@
 
   .pdf-viewer {
     height: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .file-details-header,
+  .file-viewer-header {
+    padding: 1rem;
+  }
+
+  .file-details-content {
+    padding: 1rem;
+  }
+
+  .text-viewer {
+    padding: 1rem;
+  }
+
+  .file-viewer-content {
+    padding: 1rem;
+  }
+
+  .unsupported-format {
+    padding: 2rem 1rem;
+  }
+
+  .unsupported-format .file-icon {
+    width: 150px;
+    height: 150px;
   }
 }

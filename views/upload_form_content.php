@@ -52,6 +52,4 @@
         <button type="submit" class="btn btn-edit">Upload</button>
         <a href="/app" class="btn btn-back">Cancel</a>
     </div>
-</form>
-
-<script src="/assets/js/main.js"></script> 
+</form> 

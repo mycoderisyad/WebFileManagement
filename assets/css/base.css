@@ -32,6 +32,7 @@ h2 {
 }
 
 h2::after {
+  content: '';
   position: absolute;
   left: 50%;
   bottom: 0;
@@ -39,6 +40,7 @@ h2::after {
   width: 60px;
   background: var(--text-main);
   border-radius: 3px;
+  transform: translateX(-50%);
 }
 
 /* Layout & Container */
@@ -47,4 +49,29 @@ h2::after {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding: 0 15px;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 100%;
+    padding: 0 10px;
+  }
+  
+  h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+  }
 }

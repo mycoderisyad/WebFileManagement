@@ -1,0 +1,138 @@
+/* Base Button Styles */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--text-main);
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  min-width: 80px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+  background-color: var(--text-main);
+  color: var(--bg-main);
+}
+
+.btn:hover {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  border-color: var(--text-main);
+}
+
+.btn-primary{
+  background-color: var(--text-main);
+  color: var(--bg-main);
+  border-color: var(--text-main);
+}
+
+
+.btn-secondary{
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  border-color: var(--text-main);
+}
+
+.btn-edit,
+.btn-back,
+.btn-download,
+.btn-view {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  border-color: var(--text-main);
+}
+
+.btn-edit:hover,
+.btn-back:hover,
+.btn-download:hover,
+.btn-view:hover {
+  background-color: var(--text-main);
+  color: var(--bg-main);
+  border-color: var(--text-main);
+}
+
+.btn-delete {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  border-color: var(--text-main);
+}
+
+.btn-delete:hover {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+}
+
+.confirm-btn {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--text-main);
+  border-radius: var(--border-radius);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  min-width: 100px;
+}
+
+.confirm-btn-cancel {
+  background-color: var(--text-main);
+  color: var(--bg-main);
+}
+
+.confirm-btn-cancel:hover {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+}
+
+.confirm-btn-confirm {
+  background-color: var(--text-main);
+  color: var(--bg-main);
+}
+
+.confirm-btn-confirm:hover {
+  background-color: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}
+
+@media (max-width: 768px) {
+  .btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.95rem;
+    min-width: 100px;
+  }
+  
+  .file-actions {
+    gap: 0.5rem;
+  }
+  
+  .file-actions .btn {
+    flex: 1;
+    text-align: center;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: 0.875rem 1rem;
+    font-size: 1rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+  
+  .file-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .confirm-btn {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    width: 100%;
+  }
+} 
